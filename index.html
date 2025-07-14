@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maze Game</title>
+    <title>Educational Maze Game</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -24,92 +24,132 @@
         .modal {
             transition: opacity 0.25s ease;
         }
-        .theme-card {
+        .card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .theme-card:hover {
+        .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        #word-display {
+            font-family: 'Press Start 2P', cursive;
+            letter-spacing: 0.5em;
+            height: 40px; /* Reserve space */
+            color: #8e44ad;
+        }
+        #message-box {
+            transition: opacity 0.5s ease;
         }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <!-- Theme Selection Screen -->
-    <div id="theme-selection-screen" class="w-full max-w-3xl text-center">
-        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400 mb-8">Choose Your Adventure!</h1>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="🧀">
-                <span class="text-5xl">🐭 ➡️ 🧀</span>
-                <p class="font-semibold mt-2">Mouse & Cheese</p>
+    <!-- Difficulty Selection Screen -->
+    <div id="difficulty-screen" class="w-full max-w-3xl text-center">
+        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400 mb-8">Choose a Difficulty</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card difficulty-card cursor-pointer bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md" data-length="3">
+                <p class="font-bold text-2xl">3-Letter Words</p>
             </div>
-            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🦖" data-exit="🍖">
-                <span class="text-5xl">🦖 ➡️ 🍖</span>
-                <p class="font-semibold mt-2">Dinosaur & Meat</p>
+            <div class="card difficulty-card cursor-pointer bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md" data-length="4">
+                <p class="font-bold text-2xl">4-Letter Words</p>
             </div>
-            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="🚀">
-                <span class="text-5xl">👩‍🚀 ➡️ 🚀</span>
-                <p class="font-semibold mt-2">Astronaut & Rocket</p>
-            </div>
-            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐝" data-exit="🌸">
-                <span class="text-5xl">🐝 ➡️ 🌸</span>
-                <p class="font-semibold mt-2">Bee & Flower</p>
-            </div>
-            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🚗" data-exit="🏁">
-                <span class="text-5xl">🚗 ➡️ 🏁</span>
-                <p class="font-semibold mt-2">Car & Finish Line</p>
-            </div>
-            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👨‍💻" data-exit="☕️">
-                <span class="text-5xl">👨‍💻 ➡️ ☕️</span>
-                <p class="font-semibold mt-2">Developer & Coffee</p>
+            <div class="card difficulty-card cursor-pointer bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md" data-length="5">
+                <p class="font-bold text-2xl">5-Letter Words</p>
             </div>
         </div>
     </div>
 
+    <!-- Theme Selection Screen -->
+    <div id="theme-selection-screen" class="w-full max-w-3xl text-center hidden">
+        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400 mb-2">Choose Your Adventure!</h1>
+        <p class="mb-8 text-lg">Help your character collect letters to build a word!</p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="�">
+                <span class="text-5xl">🐭 ... 🧀</span>
+                <p class="font-semibold mt-2">Mouse & Cheese</p>
+            </div>
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🦖" data-exit="🍖">
+                <span class="text-5xl">🦖 ... 🍖</span>
+                <p class="font-semibold mt-2">Dinosaur & Meat</p>
+            </div>
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="🚀">
+                <span class="text-5xl">👩‍🚀 ... 🚀</span>
+                <p class="font-semibold mt-2">Astronaut & Rocket</p>
+            </div>
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐝" data-exit="🌸">
+                <span class="text-5xl">🐝 ... 🌸</span>
+                <p class="font-semibold mt-2">Bee & Flower</p>
+            </div>
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🚗" data-exit="🏁">
+                <span class="text-5xl">🚗 ... 🏁</span>
+                <p class="font-semibold mt-2">Car & Finish Line</p>
+            </div>
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👨‍💻" data-exit="☕️">
+                <span class="text-5xl">👨‍💻 ... ☕️</span>
+                <p class="font-semibold mt-2">Developer & Coffee</p>
+            </div>
+        </div>
+        <button id="backToDifficultyBtn" class="mt-8 px-6 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600">Back</button>
+    </div>
+
     <!-- Game Screen -->
     <div id="game-screen" class="w-full max-w-2xl text-center hidden">
-        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400">Maze Runner</h1>
-        <p class="mt-2 text-lg">Use the arrow keys to find the goal!</p>
+        <h1 class="game-title text-2xl md:text-3xl text-amber-600 dark:text-amber-400">Collect the letters!</h1>
+        <div id="word-display" class="my-2 text-3xl"></div>
         
-        <div class="relative my-6">
+        <div class="relative my-4">
             <canvas id="mazeCanvas"></canvas>
-            <!-- Win Message Modal -->
             <div id="winModal" class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center rounded-lg opacity-0 pointer-events-none modal">
-                <div class="text-center text-white p-8">
-                    <h2 class="game-title text-4xl text-yellow-400">Congratulations!</h2>
-                    <p class="mt-4 text-xl">You found it!</p>
+                <div class="text-center text-white p-8 bg-purple-600 rounded-xl shadow-lg">
+                    <h2 class="game-title text-3xl text-yellow-400">Well Done!</h2>
+                    <p class="mt-4 text-2xl">You spelled:</p>
+                    <p id="win-word" class="mt-2 text-5xl game-title text-white"></p>
                 </div>
             </div>
         </div>
         
-        <div class="flex justify-center gap-4">
-            <button id="newGameBtn" class="px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50 transition-transform transform hover:scale-105">
-                New Game
-            </button>
-            <button id="changeThemeBtn" class="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-transform transform hover:scale-105">
-                Change Theme
-            </button>
+        <div id="message-box" class="h-8 mt-2 text-lg text-red-500 font-semibold"></div>
+
+        <div class="flex justify-center gap-4 mt-2">
+            <button id="newGameBtn" class="px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700">New Word</button>
+            <button id="changeThemeBtn" class="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600">Change Theme</button>
         </div>
     </div>
 
     <script>
         // DOM Elements
+        const difficultyScreen = document.getElementById('difficulty-screen');
         const themeSelectionScreen = document.getElementById('theme-selection-screen');
         const gameScreen = document.getElementById('game-screen');
         const canvas = document.getElementById('mazeCanvas');
         const ctx = canvas.getContext('2d');
         const newGameBtn = document.getElementById('newGameBtn');
         const changeThemeBtn = document.getElementById('changeThemeBtn');
+        const backToDifficultyBtn = document.getElementById('backToDifficultyBtn');
         const winModal = document.getElementById('winModal');
+        const wordDisplay = document.getElementById('word-display');
+        const winWord = document.getElementById('win-word');
+        const messageBox = document.getElementById('message-box');
 
         // Game Configuration
+        const wordsByLength = {
+            3: ['cat', 'dog', 'sun', 'bed', 'pig', 'run', 'hat', 'pen', 'cup', 'egg', 'bus', 'car', 'key', 'jam', 'web', 'fox', 'zip'],
+            4: ['frog', 'ship', 'fish', 'duck', 'hand', 'ball', 'star', 'moon', 'tree', 'book', 'milk', 'boat', 'flag'],
+            5: ['train', 'plane', 'mouse', 'house', 'apple', 'water', 'table', 'chair', 'green', 'happy', 'smile', 'earth']
+        };
+        let chosenWordLength = 3;
+        let targetWord = '';
+        let letters = [];
+        let nextLetterToCollectIndex = 0;
+        
         let maze, player, exit;
         let playerChar, exitChar;
         let cellSize;
         let cols, rows;
         let isGameOver = false;
+        let messageTimeout;
 
-        // Cell class for maze generation
         class Cell {
             constructor(x, y) {
                 this.x = x;
@@ -129,32 +169,104 @@
             }
         }
 
-        // Sets up the canvas size based on the window
         function setupCanvas() {
             const containerWidth = Math.min(window.innerWidth * 0.9, 600);
-            cellSize = Math.floor(containerWidth / 20); // Aim for a 20x20 grid
+            cellSize = Math.floor(containerWidth / 20);
             cols = Math.floor(containerWidth / cellSize);
             rows = Math.floor(containerWidth / cellSize);
             canvas.width = cols * cellSize;
             canvas.height = rows * cellSize;
         }
 
-        // Starts a new game
         function newGame() {
             isGameOver = false;
             winModal.style.opacity = '0';
             winModal.style.pointerEvents = 'none';
+            messageBox.textContent = '';
+            
+            const wordList = wordsByLength[chosenWordLength];
+            targetWord = wordList[Math.floor(Math.random() * wordList.length)];
+            letters = [];
+            nextLetterToCollectIndex = 0;
+            updateWordDisplay();
+
             setupCanvas();
             maze = createGrid();
             generateMaze();
             
             player = { x: 0, y: 0 };
             exit = { x: cols - 1, y: rows - 1 };
+            
+            const solutionPath = findSolutionPath();
+            placeLetters(solutionPath);
+            
+            gameLoop();
+        }
+        
+        function findSolutionPath() {
+            const start = maze[index(0, 0)];
+            const end = maze[index(cols - 1, rows - 1)];
+            const queue = [[start]];
+            const visited = new Set([start]);
 
-            draw();
+            while (queue.length > 0) {
+                const path = queue.shift();
+                const current = path[path.length - 1];
+
+                if (current === end) {
+                    return path;
+                }
+
+                const { x, y } = current;
+                const neighbors = [];
+                if (!current.walls.top) neighbors.push(maze[index(x, y - 1)]);
+                if (!current.walls.right) neighbors.push(maze[index(x + 1, y)]);
+                if (!current.walls.bottom) neighbors.push(maze[index(x, y + 1)]);
+                if (!current.walls.left) neighbors.push(maze[index(x - 1, y)]);
+                
+                for (const neighbor of neighbors) {
+                    if (neighbor && !visited.has(neighbor)) {
+                        visited.add(neighbor);
+                        const newPath = [...path, neighbor];
+                        queue.push(newPath);
+                    }
+                }
+            }
+            return [];
+        }
+        
+        function placeLetters(solutionPath) {
+            if (!solutionPath || solutionPath.length < 2) return;
+
+            const numLetters = targetWord.length;
+            const spacing = Math.floor(solutionPath.length / (numLetters + 1));
+
+            for (let i = 0; i < numLetters; i++) {
+                const pathIndex = (i + 1) * spacing;
+                if (pathIndex < solutionPath.length) {
+                    const cell = solutionPath[pathIndex];
+                    letters.push({
+                        char: targetWord[i],
+                        x: cell.x,
+                        y: cell.y,
+                        collected: false
+                    });
+                }
+            }
         }
 
-        // Creates the initial grid of cells
+        function updateWordDisplay() {
+            let displayHTML = '';
+            for (let i = 0; i < targetWord.length; i++) {
+                if (i < nextLetterToCollectIndex) {
+                    displayHTML += `<span>${targetWord[i]}</span>`;
+                } else {
+                    displayHTML += `<span>_</span>`;
+                }
+            }
+            wordDisplay.innerHTML = displayHTML;
+        }
+
         function createGrid() {
             const grid = [];
             for (let y = 0; y < rows; y++) {
@@ -164,8 +276,7 @@
             }
             return grid;
         }
-
-        // Generates the maze using recursive backtracking
+        
         function generateMaze() {
             const stack = [];
             let current = maze[0];
@@ -185,8 +296,7 @@
                 }
             }
         }
-
-        // Helper to get unvisited neighbors of a cell
+        
         function getUnvisitedNeighbors(cell) {
             const neighbors = [];
             const { x, y } = cell;
@@ -201,13 +311,11 @@
             return neighbors;
         }
 
-        // Helper to get the index in the 1D array from 2D coordinates
         function index(x, y) {
             if (x < 0 || y < 0 || x > cols - 1 || y > rows - 1) return -1;
             return x + y * cols;
         }
-
-        // Removes walls between two adjacent cells
+        
         function removeWalls(a, b) {
             const dx = a.x - b.x;
             if (dx === 1) { a.walls.left = false; b.walls.right = false; } 
@@ -217,19 +325,43 @@
             else if (dy === -1) { a.walls.bottom = false; b.walls.top = false; }
         }
 
-        // Main draw function
+        function gameLoop() {
+            draw();
+            if (!isGameOver) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             maze.forEach(cell => cell.draw());
-            ctx.font = `${cellSize * 0.8}px Arial`;
+            
+            ctx.font = `${cellSize * 0.8}px 'Press Start 2P'`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            // Use selected theme characters
+
+            letters.forEach((letter, i) => {
+                if (!letter.collected) {
+                    ctx.fillStyle = i === nextLetterToCollectIndex ? '#8e44ad' : '#3498db';
+                    const x = letter.x * cellSize + cellSize / 2;
+                    const y = letter.y * cellSize + cellSize / 2;
+                    if (i === nextLetterToCollectIndex) {
+                        ctx.save();
+                        ctx.translate(x, y);
+                        ctx.rotate(Math.sin(Date.now() / 150) * 0.15);
+                        ctx.fillText(letter.char, 0, 0);
+                        ctx.restore();
+                    } else {
+                       ctx.fillText(letter.char, x, y);
+                    }
+                }
+            });
+
+            ctx.font = `${cellSize * 0.8}px Arial`;
             ctx.fillText(exitChar, exit.x * cellSize + cellSize / 2, exit.y * cellSize + cellSize / 2);
             ctx.fillText(playerChar, player.x * cellSize + cellSize / 2, player.y * cellSize + cellSize / 2);
         }
 
-        // Handles player movement
         function movePlayer(e) {
             if (isGameOver) return;
             const currentCell = maze[index(player.x, player.y)];
@@ -241,54 +373,100 @@
                 case 'ArrowRight': if (!currentCell.walls.right) { player.x++; moved = true; } break;
             }
             if (moved) {
-                draw();
+                checkLetterCollection();
                 checkWinCondition();
             }
         }
 
-        // Checks if the player has reached the exit
+        function showTemporaryMessage(message) {
+            clearTimeout(messageTimeout);
+            messageBox.textContent = message;
+            messageBox.style.opacity = '1';
+            messageTimeout = setTimeout(() => {
+                messageBox.style.opacity = '0';
+            }, 2000);
+        }
+
+        function checkLetterCollection() {
+            if (nextLetterToCollectIndex < letters.length) {
+                const nextLetter = letters[nextLetterToCollectIndex];
+                if (player.x === nextLetter.x && player.y === nextLetter.y) {
+                    nextLetter.collected = true;
+                    nextLetterToCollectIndex++;
+                    updateWordDisplay();
+                    return;
+                }
+            }
+            for (let i = 0; i < letters.length; i++) {
+                if (i === nextLetterToCollectIndex || letters[i].collected) continue;
+                const wrongLetter = letters[i];
+                if (player.x === wrongLetter.x && player.y === wrongLetter.y) {
+                    showTemporaryMessage("Find the wiggling letter first!");
+                    return;
+                }
+            }
+        }
+
         function checkWinCondition() {
             if (player.x === exit.x && player.y === exit.y) {
-                isGameOver = true;
-                winModal.style.opacity = '1';
-                winModal.style.pointerEvents = 'auto';
+                if (nextLetterToCollectIndex === targetWord.length) {
+                    isGameOver = true;
+                    winWord.textContent = targetWord;
+                    winModal.style.opacity = '1';
+                    winModal.style.pointerEvents = 'auto';
+                } else {
+                    showTemporaryMessage("Find all the letters first!");
+                }
             }
         }
         
         // --- Screen Management ---
+        function showDifficultyScreen() {
+            difficultyScreen.classList.remove('hidden');
+            themeSelectionScreen.classList.add('hidden');
+            gameScreen.classList.add('hidden');
+        }
+
+        function showThemeScreen() {
+            difficultyScreen.classList.add('hidden');
+            themeSelectionScreen.classList.remove('hidden');
+            gameScreen.classList.add('hidden');
+        }
+
         function showGameScreen() {
+            difficultyScreen.classList.add('hidden');
             themeSelectionScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
         }
 
-        function showThemeScreen() {
-            gameScreen.classList.add('hidden');
-            themeSelectionScreen.classList.remove('hidden');
-        }
+        // --- Event Listeners ---
+        difficultyScreen.addEventListener('click', (e) => {
+            const difficultyCard = e.target.closest('.difficulty-card');
+            if (!difficultyCard) return;
+            chosenWordLength = parseInt(difficultyCard.dataset.length, 10);
+            showThemeScreen();
+        });
 
-        // Event Listeners
         themeSelectionScreen.addEventListener('click', (e) => {
             const themeCard = e.target.closest('.theme-card');
             if (!themeCard) return;
-
             playerChar = themeCard.dataset.player;
             exitChar = themeCard.dataset.exit;
-            
             showGameScreen();
             newGame();
         });
 
+        backToDifficultyBtn.addEventListener('click', showDifficultyScreen);
         newGameBtn.addEventListener('click', newGame);
         changeThemeBtn.addEventListener('click', showThemeScreen);
         window.addEventListener('keydown', movePlayer);
         window.addEventListener('resize', () => {
-             // Only resize if game is active
             if (!gameScreen.classList.contains('hidden')) {
                 newGame();
             }
         });
 
     </script>
-
 </body>
 </html>
+�
