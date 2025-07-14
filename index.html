@@ -88,11 +88,11 @@
                 <span class="text-5xl">🦖 ... 🍖</span>
                 <p class="font-semibold mt-2">Dinosaur & Meat</p>
             </div>
-            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="�">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="🚀">
                 <span class="text-5xl">👩‍🚀 ... 🚀</span>
                 <p class="font-semibold mt-2">Astronaut & Rocket</p>
             </div>
-            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐝" data-exit="🌸">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐝" data-exit="�">
                 <span class="text-5xl">🐝 ... 🌸</span>
                 <p class="font-semibold mt-2">Bee & Flower</p>
             </div>
@@ -127,24 +127,29 @@
         <div id="message-box" class="h-8 mt-2 text-lg text-red-500 font-semibold"></div>
 
         <!-- On-screen D-pad controls for mobile -->
-        <div id="d-pad-controls" class="mt-4 grid grid-cols-3 gap-2 w-48 mx-auto">
-            <div></div>
-            <button id="up-btn" class="d-pad-btn col-start-2">
-                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
-            </button>
-            <div></div>
-            <button id="left-btn" class="d-pad-btn">
-                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            <div></div>
-            <button id="right-btn" class="d-pad-btn">
-                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-            </button>
-            <div></div>
-            <button id="down-btn" class="d-pad-btn col-start-2">
-                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            <div></div>
+        <div id="d-pad-controls" class="mt-4 flex justify-center">
+            <div class="grid grid-cols-3 grid-rows-3 w-48 h-48">
+                <div class="col-start-2 row-start-1 flex justify-center items-center">
+                    <button id="up-btn" class="d-pad-btn">
+                        <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                    </button>
+                </div>
+                <div class="col-start-1 row-start-2 flex justify-center items-center">
+                    <button id="left-btn" class="d-pad-btn">
+                        <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                </div>
+                <div class="col-start-3 row-start-2 flex justify-center items-center">
+                    <button id="right-btn" class="d-pad-btn">
+                        <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+                <div class="col-start-2 row-start-3 flex justify-center items-center">
+                    <button id="down-btn" class="d-pad-btn">
+                        <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="flex justify-center gap-4 mt-6">
