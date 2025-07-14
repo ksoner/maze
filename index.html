@@ -40,6 +40,21 @@
         #message-box {
             transition: opacity 0.5s ease;
         }
+        .d-pad-btn {
+            width: 60px;
+            height: 60px;
+            background-color: #cbd5e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            user-select: none; /* Prevent text selection on tap */
+        }
+        .d-pad-btn:active {
+            background-color: #94a3b8;
+            transform: translateY(2px);
+        }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col items-center justify-center min-h-screen p-4">
@@ -65,7 +80,7 @@
         <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400 mb-2">Choose Your Adventure!</h1>
         <p class="mb-8 text-lg">Help your character collect letters to build a word!</p>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="�">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="🧀">
                 <span class="text-5xl">🐭 ... 🧀</span>
                 <p class="font-semibold mt-2">Mouse & Cheese</p>
             </div>
@@ -73,7 +88,7 @@
                 <span class="text-5xl">🦖 ... 🍖</span>
                 <p class="font-semibold mt-2">Dinosaur & Meat</p>
             </div>
-            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="🚀">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="�">
                 <span class="text-5xl">👩‍🚀 ... 🚀</span>
                 <p class="font-semibold mt-2">Astronaut & Rocket</p>
             </div>
@@ -111,7 +126,28 @@
         
         <div id="message-box" class="h-8 mt-2 text-lg text-red-500 font-semibold"></div>
 
-        <div class="flex justify-center gap-4 mt-2">
+        <!-- On-screen D-pad controls for mobile -->
+        <div id="d-pad-controls" class="mt-4 grid grid-cols-3 gap-2 w-48 mx-auto">
+            <div></div>
+            <button id="up-btn" class="d-pad-btn col-start-2">
+                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+            </button>
+            <div></div>
+            <button id="left-btn" class="d-pad-btn">
+                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <div></div>
+            <button id="right-btn" class="d-pad-btn">
+                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+            <div></div>
+            <button id="down-btn" class="d-pad-btn col-start-2">
+                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div></div>
+        </div>
+
+        <div class="flex justify-center gap-4 mt-6">
             <button id="newGameBtn" class="px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700">New Word</button>
             <button id="changeThemeBtn" class="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600">Change Theme</button>
         </div>
@@ -131,6 +167,10 @@
         const wordDisplay = document.getElementById('word-display');
         const winWord = document.getElementById('win-word');
         const messageBox = document.getElementById('message-box');
+        const upBtn = document.getElementById('up-btn');
+        const downBtn = document.getElementById('down-btn');
+        const leftBtn = document.getElementById('left-btn');
+        const rightBtn = document.getElementById('right-btn');
 
         // Game Configuration
         const wordsByLength = {
@@ -362,19 +402,33 @@
             ctx.fillText(playerChar, player.x * cellSize + cellSize / 2, player.y * cellSize + cellSize / 2);
         }
 
-        function movePlayer(e) {
+        function handleMove(direction) {
             if (isGameOver) return;
             const currentCell = maze[index(player.x, player.y)];
             let moved = false;
-            switch (e.key) {
-                case 'ArrowUp': if (!currentCell.walls.top) { player.y--; moved = true; } break;
-                case 'ArrowDown': if (!currentCell.walls.bottom) { player.y++; moved = true; } break;
-                case 'ArrowLeft': if (!currentCell.walls.left) { player.x--; moved = true; } break;
-                case 'ArrowRight': if (!currentCell.walls.right) { player.x++; moved = true; } break;
+            switch (direction) {
+                case 'up': if (!currentCell.walls.top) { player.y--; moved = true; } break;
+                case 'down': if (!currentCell.walls.bottom) { player.y++; moved = true; } break;
+                case 'left': if (!currentCell.walls.left) { player.x--; moved = true; } break;
+                case 'right': if (!currentCell.walls.right) { player.x++; moved = true; } break;
             }
             if (moved) {
                 checkLetterCollection();
                 checkWinCondition();
+            }
+        }
+
+        function handleKeyboard(e) {
+            let direction = null;
+            switch (e.key) {
+                case 'ArrowUp': direction = 'up'; break;
+                case 'ArrowDown': direction = 'down'; break;
+                case 'ArrowLeft': direction = 'left'; break;
+                case 'ArrowRight': direction = 'right'; break;
+            }
+            if(direction) {
+                e.preventDefault(); // Prevent page scrolling with arrow keys
+                handleMove(direction);
             }
         }
 
@@ -459,12 +513,18 @@
         backToDifficultyBtn.addEventListener('click', showDifficultyScreen);
         newGameBtn.addEventListener('click', newGame);
         changeThemeBtn.addEventListener('click', showThemeScreen);
-        window.addEventListener('keydown', movePlayer);
+        window.addEventListener('keydown', handleKeyboard);
         window.addEventListener('resize', () => {
             if (!gameScreen.classList.contains('hidden')) {
                 newGame();
             }
         });
+
+        // D-pad controls
+        upBtn.addEventListener('click', () => handleMove('up'));
+        downBtn.addEventListener('click', () => handleMove('down'));
+        leftBtn.addEventListener('click', () => handleMove('left'));
+        rightBtn.addEventListener('click', () => handleMove('right'));
 
     </script>
 </body>
