@@ -41,8 +41,8 @@
             transition: opacity 0.5s ease;
         }
         .d-pad-btn {
-            width: 56px; /* Slightly smaller buttons */
-            height: 56px;
+            width: 48px; /* Even smaller buttons */
+            height: 48px;
             background-color: #cbd5e1;
             border-radius: 50%;
             display: flex;
@@ -80,7 +80,7 @@
         <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400 mb-2">Choose Your Adventure!</h1>
         <p class="mb-8 text-lg">Help your character collect letters to build a word!</p>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="�">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="🧀">
                 <span class="text-5xl">🐭 ... 🧀</span>
                 <p class="font-semibold mt-2">Mouse & Cheese</p>
             </div>
@@ -96,7 +96,7 @@
                 <span class="text-5xl">🐝 ... 🌸</span>
                 <p class="font-semibold mt-2">Bee & Flower</p>
             </div>
-            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🚗" data-exit="🏁">
+            <div class="card theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🚗" data-exit="�">
                 <span class="text-5xl">🚗 ... 🏁</span>
                 <p class="font-semibold mt-2">Car & Finish Line</p>
             </div>
@@ -128,7 +128,7 @@
 
         <!-- On-screen D-pad controls for mobile -->
         <div id="d-pad-controls" class="mt-2 flex justify-center">
-            <div class="grid grid-cols-3 grid-rows-3 w-40 h-40">
+            <div class="grid grid-cols-3 grid-rows-3 w-36 h-36">
                 <div class="col-start-2 row-start-1 flex justify-center items-center">
                     <button id="up-btn" class="d-pad-btn">
                         <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
@@ -152,7 +152,7 @@
             </div>
         </div>
 
-        <div class="flex justify-center gap-4 mt-6">
+        <div class="flex justify-center gap-4 mt-4">
             <button id="newGameBtn" class="px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700">New Word</button>
             <button id="changeThemeBtn" class="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600">Change Theme</button>
         </div>
