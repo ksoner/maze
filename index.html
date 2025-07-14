@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yapay Zeka Destekli Labirent Oyunu</title>
+    <title>Maze Game</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -19,199 +19,95 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .game-title {
-            font-family: 'Press+Start+2P', cursive;
+            font-family: 'Press Start 2P', cursive;
         }
         .modal {
             transition: opacity 0.25s ease;
         }
-        .gemini-btn {
-            background-color: #8e44ad;
-            color: white;
+        .theme-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .gemini-btn:hover {
-            background-color: #9b59b6;
-        }
-        .gemini-btn:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-        }
-        .spinner {
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #9b59b6;
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 8px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-2xl text-center mb-4">
-        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400">Labirent Fare</h1>
-        <h2 id="mazeName" class="mt-2 text-2xl text-purple-600 dark:text-purple-400 h-8"></h2>
-        <p class="mt-2 text-lg">Ok tuşlarını kullanarak fareyi 🐭 peynire 🧀 ulaştır!</p>
-    </div>
-
-    <div class="relative">
-        <canvas id="mazeCanvas"></canvas>
-        <!-- Win Message Modal -->
-        <div id="winModal" class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center rounded-lg opacity-0 pointer-events-none modal">
-            <div class="text-center text-white p-8">
-                <h2 class="game-title text-4xl text-yellow-400">Tebrikler!</h2>
-                <p class="mt-4 text-xl">Peyniri buldun!</p>
+    <!-- Theme Selection Screen -->
+    <div id="theme-selection-screen" class="w-full max-w-3xl text-center">
+        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400 mb-8">Choose Your Adventure!</h1>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐭" data-exit="🧀">
+                <span class="text-5xl">🐭 ➡️ 🧀</span>
+                <p class="font-semibold mt-2">Mouse & Cheese</p>
+            </div>
+            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🦖" data-exit="🍖">
+                <span class="text-5xl">🦖 ➡️ 🍖</span>
+                <p class="font-semibold mt-2">Dinosaur & Meat</p>
+            </div>
+            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👩‍🚀" data-exit="🚀">
+                <span class="text-5xl">👩‍🚀 ➡️ 🚀</span>
+                <p class="font-semibold mt-2">Astronaut & Rocket</p>
+            </div>
+            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🐝" data-exit="🌸">
+                <span class="text-5xl">🐝 ➡️ 🌸</span>
+                <p class="font-semibold mt-2">Bee & Flower</p>
+            </div>
+            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="🚗" data-exit="🏁">
+                <span class="text-5xl">🚗 ➡️ 🏁</span>
+                <p class="font-semibold mt-2">Car & Finish Line</p>
+            </div>
+            <div class="theme-card cursor-pointer bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" data-player="👨‍💻" data-exit="☕️">
+                <span class="text-5xl">👨‍💻 ➡️ ☕️</span>
+                <p class="font-semibold mt-2">Developer & Coffee</p>
             </div>
         </div>
     </div>
-    
-    <div class="flex flex-wrap justify-center gap-4 mt-6">
-        <button id="newGameBtn" class="px-6 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50 transition-transform transform hover:scale-105">
-            Yeni Oyun
-        </button>
-        <button id="generateNameBtn" class="px-6 py-3 gemini-btn font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-transform transform hover:scale-105 flex items-center justify-center">
-            <span class="btn-text">✨ Labirent Adı Oluştur</span>
-            <span class="spinner" style="display: none;"></span>
-        </button>
-        <button id="getHintBtn" class="px-6 py-3 gemini-btn font-bold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-transform transform hover:scale-105 flex items-center justify-center">
-             <span class="btn-text">✨ İpucu Ver</span>
-             <span class="spinner" style="display: none;"></span>
-        </button>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="w-full max-w-2xl text-center hidden">
+        <h1 class="game-title text-3xl md:text-4xl text-amber-600 dark:text-amber-400">Maze Runner</h1>
+        <p class="mt-2 text-lg">Use the arrow keys to find the goal!</p>
+        
+        <div class="relative my-6">
+            <canvas id="mazeCanvas"></canvas>
+            <!-- Win Message Modal -->
+            <div id="winModal" class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center rounded-lg opacity-0 pointer-events-none modal">
+                <div class="text-center text-white p-8">
+                    <h2 class="game-title text-4xl text-yellow-400">Congratulations!</h2>
+                    <p class="mt-4 text-xl">You found it!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-center gap-4">
+            <button id="newGameBtn" class="px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50 transition-transform transform hover:scale-105">
+                New Game
+            </button>
+            <button id="changeThemeBtn" class="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-transform transform hover:scale-105">
+                Change Theme
+            </button>
+        </div>
     </div>
-
-    <div id="hintBox" class="mt-4 p-4 bg-purple-100 dark:bg-gray-800 text-purple-800 dark:text-purple-300 rounded-lg shadow-inner text-center w-full max-w-md" style="display: none;"></div>
-
 
     <script>
         // DOM Elements
+        const themeSelectionScreen = document.getElementById('theme-selection-screen');
+        const gameScreen = document.getElementById('game-screen');
         const canvas = document.getElementById('mazeCanvas');
         const ctx = canvas.getContext('2d');
         const newGameBtn = document.getElementById('newGameBtn');
+        const changeThemeBtn = document.getElementById('changeThemeBtn');
         const winModal = document.getElementById('winModal');
-        const generateNameBtn = document.getElementById('generateNameBtn');
-        const getHintBtn = document.getElementById('getHintBtn');
-        const mazeNameEl = document.getElementById('mazeName');
-        const hintBox = document.getElementById('hintBox');
 
         // Game Configuration
         let maze, player, exit;
+        let playerChar, exitChar;
         let cellSize;
         let cols, rows;
         let isGameOver = false;
-
-        // --- Gemini API Helper ---
-        const API_KEY = ""; // Provided by the environment
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
-
-        async function callGemini(prompt) {
-            const payload = {
-                contents: [{
-                    role: "user",
-                    parts: [{ text: prompt }]
-                }]
-            };
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-
-                const result = await response.json();
-                
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    return result.candidates[0].content.parts[0].text.trim();
-                } else {
-                    // Handle cases where the response structure is unexpected or content is missing
-                    console.error("Unexpected API response structure:", result);
-                    // Check for safety ratings or other blocks
-                    if (result.candidates && result.candidates[0] && result.candidates[0].finishReason) {
-                         throw new Error(`API call finished with reason: ${result.candidates[0].finishReason}`);
-                    }
-                    throw new Error("API'den geçerli bir yanıt alınamadı.");
-                }
-
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                throw error;
-            }
-        }
-        
-        function toggleButtonLoading(button, isLoading) {
-            const text = button.querySelector('.btn-text');
-            const spinner = button.querySelector('.spinner');
-            if (isLoading) {
-                button.disabled = true;
-                text.style.display = 'none';
-                spinner.style.display = 'inline-block';
-            } else {
-                button.disabled = false;
-                text.style.display = 'inline-block';
-                spinner.style.display = 'none';
-            }
-        }
-
-        // --- Gemini Feature: Generate Maze Name ---
-        async function generateMazeName() {
-            toggleButtonLoading(generateNameBtn, true);
-            mazeNameEl.textContent = "İsim oluşturuluyor...";
-            hintBox.style.display = 'none';
-            try {
-                const prompt = "Bir fare ve peynir hakkında bir labirent oyunu için Türkçe, kısa, komik ve yaratıcı tek bir isim oluştur. Sadece ismi döndür. Örnek: Peynir Kaçışı, Bıyıklı Macera, Kaşar Kovalamacası.";
-                const name = await callGemini(prompt);
-                mazeNameEl.textContent = name;
-            } catch (error) {
-                mazeNameEl.textContent = "İsim oluşturulamadı.";
-                hintBox.textContent = `Hata: ${error.message}`;
-                hintBox.style.display = 'block';
-            } finally {
-                toggleButtonLoading(generateNameBtn, false);
-            }
-        }
-
-        // --- Gemini Feature: Get Hint ---
-        async function getHint() {
-            if (isGameOver) {
-                hintBox.textContent = "Oyun bitti! Zaten peyniri buldun.";
-                hintBox.style.display = 'block';
-                return;
-            }
-            
-            toggleButtonLoading(getHintBtn, true);
-            hintBox.textContent = "İpucu hazırlanıyor...";
-            hintBox.style.display = 'block';
-            
-            try {
-                const currentCell = maze[index(player.x, player.y)];
-                const possibleMoves = [];
-                if (!currentCell.walls.top) possibleMoves.push("yukarı");
-                if (!currentCell.walls.bottom) possibleMoves.push("aşağı");
-                if (!currentCell.walls.left) possibleMoves.push("sola");
-                if (!currentCell.walls.right) possibleMoves.push("sağa");
-
-                const prompt = `Sen bir labirent oyununda yardımcısın. Oyuncu (fare) sıkıştı. Labirent ${cols}x${rows} boyutunda. Oyuncu (${player.x}, ${player.y}) konumunda. Çıkış (peynir) (${exit.x}, ${exit.y}) konumunda. Oyuncunun şu anki konumundan gidebileceği yönler: ${possibleMoves.join(', ')}. Oyuncuya çıkışa doğru gitmesi için Türkçe, kısa, tek cümlelik ve cesaret verici bir ipucu ver. Asla tam çözümü söyleme. Örneğin: 'Biraz daha güneye inmeyi dene.' veya 'Doğuya doğru bir yol var gibi görünüyor.'`;
-
-                const hint = await callGemini(prompt);
-                hintBox.textContent = `✨ İpucu: ${hint}`;
-            } catch (error) {
-                hintBox.textContent = `Hata: İpucu alınamadı. ${error.message}`;
-            } finally {
-                toggleButtonLoading(getHintBtn, false);
-            }
-        }
-
 
         // Cell class for maze generation
         class Cell {
@@ -233,22 +129,21 @@
             }
         }
 
+        // Sets up the canvas size based on the window
         function setupCanvas() {
             const containerWidth = Math.min(window.innerWidth * 0.9, 600);
-            cellSize = Math.floor(containerWidth / 20);
+            cellSize = Math.floor(containerWidth / 20); // Aim for a 20x20 grid
             cols = Math.floor(containerWidth / cellSize);
             rows = Math.floor(containerWidth / cellSize);
             canvas.width = cols * cellSize;
             canvas.height = rows * cellSize;
         }
 
+        // Starts a new game
         function newGame() {
             isGameOver = false;
             winModal.style.opacity = '0';
             winModal.style.pointerEvents = 'none';
-            mazeNameEl.textContent = '';
-            hintBox.style.display = 'none';
-
             setupCanvas();
             maze = createGrid();
             generateMaze();
@@ -259,6 +154,7 @@
             draw();
         }
 
+        // Creates the initial grid of cells
         function createGrid() {
             const grid = [];
             for (let y = 0; y < rows; y++) {
@@ -269,6 +165,7 @@
             return grid;
         }
 
+        // Generates the maze using recursive backtracking
         function generateMaze() {
             const stack = [];
             let current = maze[0];
@@ -289,6 +186,7 @@
             }
         }
 
+        // Helper to get unvisited neighbors of a cell
         function getUnvisitedNeighbors(cell) {
             const neighbors = [];
             const { x, y } = cell;
@@ -303,11 +201,13 @@
             return neighbors;
         }
 
+        // Helper to get the index in the 1D array from 2D coordinates
         function index(x, y) {
             if (x < 0 || y < 0 || x > cols - 1 || y > rows - 1) return -1;
             return x + y * cols;
         }
 
+        // Removes walls between two adjacent cells
         function removeWalls(a, b) {
             const dx = a.x - b.x;
             if (dx === 1) { a.walls.left = false; b.walls.right = false; } 
@@ -317,16 +217,19 @@
             else if (dy === -1) { a.walls.bottom = false; b.walls.top = false; }
         }
 
+        // Main draw function
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             maze.forEach(cell => cell.draw());
             ctx.font = `${cellSize * 0.8}px Arial`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('🧀', exit.x * cellSize + cellSize / 2, exit.y * cellSize + cellSize / 2);
-            ctx.fillText('🐭', player.x * cellSize + cellSize / 2, player.y * cellSize + cellSize / 2);
+            // Use selected theme characters
+            ctx.fillText(exitChar, exit.x * cellSize + cellSize / 2, exit.y * cellSize + cellSize / 2);
+            ctx.fillText(playerChar, player.x * cellSize + cellSize / 2, player.y * cellSize + cellSize / 2);
         }
 
+        // Handles player movement
         function movePlayer(e) {
             if (isGameOver) return;
             const currentCell = maze[index(player.x, player.y)];
@@ -343,6 +246,7 @@
             }
         }
 
+        // Checks if the player has reached the exit
         function checkWinCondition() {
             if (player.x === exit.x && player.y === exit.y) {
                 isGameOver = true;
@@ -350,16 +254,40 @@
                 winModal.style.pointerEvents = 'auto';
             }
         }
+        
+        // --- Screen Management ---
+        function showGameScreen() {
+            themeSelectionScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+        }
+
+        function showThemeScreen() {
+            gameScreen.classList.add('hidden');
+            themeSelectionScreen.classList.remove('hidden');
+        }
 
         // Event Listeners
-        newGameBtn.addEventListener('click', newGame);
-        generateNameBtn.addEventListener('click', generateMazeName);
-        getHintBtn.addEventListener('click', getHint);
-        window.addEventListener('keydown', movePlayer);
-        window.addEventListener('resize', newGame);
+        themeSelectionScreen.addEventListener('click', (e) => {
+            const themeCard = e.target.closest('.theme-card');
+            if (!themeCard) return;
 
-        // Initial game start
-        newGame();
+            playerChar = themeCard.dataset.player;
+            exitChar = themeCard.dataset.exit;
+            
+            showGameScreen();
+            newGame();
+        });
+
+        newGameBtn.addEventListener('click', newGame);
+        changeThemeBtn.addEventListener('click', showThemeScreen);
+        window.addEventListener('keydown', movePlayer);
+        window.addEventListener('resize', () => {
+             // Only resize if game is active
+            if (!gameScreen.classList.contains('hidden')) {
+                newGame();
+            }
+        });
+
     </script>
 
 </body>
